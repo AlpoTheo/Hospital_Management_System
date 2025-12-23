@@ -1,6 +1,6 @@
 # Hospital Patient Management System
 
-This is my homework project for **CENG 201 - Data Structures** course. I had to build a hospital simulation using linked list, queue and stack from scratch. The rule was no using java.util stuff like ArrayList or LinkedList, so I wrote everything manually with nodes and pointers.
+This is my assignment project for **CENG 201 - Data Structures** course. I had to build a hospital simulation using linked list, queue and stack from scratch. The rule was no using java.util stuff like ArrayList or LinkedList, so I wrote everything manually with nodes and pointers.
 
 ## What does it do?
 
