@@ -45,12 +45,13 @@ public class DischargeStack {
             return;
         }
         
-        System.out.println("Patient ID\tTime");
-        System.out.println("----------\t----");
+        // Header with fixed column widths
+        System.out.printf("%-12s %-18s%n", "Patient ID", "Time");
+        System.out.printf("%-12s %-18s%n", "----------", "----------------");
         
         DischargeNode temp = top;
         while (temp != null) {
-            System.out.println(temp.getData().getPatID() + "\t\t" + temp.getData().getTime());
+            System.out.printf("%-12d %-18d%n", temp.getData().getPatID(), temp.getData().getTime());
             temp = temp.getNext();
         }
     }

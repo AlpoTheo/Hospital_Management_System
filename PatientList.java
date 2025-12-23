@@ -71,20 +71,23 @@ public class PatientList {
         return null; // Not found
     }
     
-    // Prints all patients
+    // Prints all patients in a formatted table
     public void printList() {
         if (head == null) {
             System.out.println("Patient List is empty.");
             return;
         }
         
-        System.out.println("ID\tName\t\tSeverity\tAge");
-        System.out.println("--\t----\t\t--------\t---");
+        // Header with fixed column widths
+        System.out.printf("%-6s %-15s %-10s %-5s%n", "ID", "Name", "Severity", "Age");
+        System.out.printf("%-6s %-15s %-10s %-5s%n", "---", "----", "--------", "---");
         
         PatientNode current = head;
         while (current != null) {
             Patient p = current.getPatient();
-            System.out.println(p.getId() + "\t" + p.getName() + "\t" + p.getSeverity() + "\t\t" + p.getAge());
+            // Print each row with same column widths
+            System.out.printf("%-6d %-15s %-10d %-5d%n", 
+                p.getId(), p.getName(), p.getSeverity(), p.getAge());
             current = current.getNext();
         }
         System.out.println("Total Patients: " + size);

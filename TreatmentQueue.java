@@ -57,14 +57,15 @@ public class TreatmentQueue {
         TreatmentNode current = front;
         int count = 1;
         
-        System.out.println("Pos\tPatient ID\tPriority");
-        System.out.println("---\t----------\t--------");
+        // Header with fixed widths
+        System.out.printf("%-5s %-12s %-10s%n", "Pos", "Patient ID", "Priority");
+        System.out.printf("%-5s %-12s %-10s%n", "---", "----------", "--------");
         
         while (current != null) {
             TreatmentRequest req = current.getRequest();
             String priorityStr = req.isPriority() ? "YES" : "No";
             
-            System.out.println(count + "\t" + req.getPatientId() + "\t\t" + priorityStr);
+            System.out.printf("%-5d %-12d %-10s%n", count, req.getPatientId(), priorityStr);
             
             current = current.getNext();
             count++;
