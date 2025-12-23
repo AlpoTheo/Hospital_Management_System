@@ -1,56 +1,60 @@
-// Patient class - stores patient info
+// I created this class to store basic information about each patient
+// Every patient has an id, name, how serious their condition is, and their age
 public class Patient {
 
-    private int id;
-    private String name;
-    private int severity;  // 1-10 scale
-    private int age;
+    // these are the main attributes I need for each patient
+    private int patientId;
+    private String patientName;
+    private int severityLevel;  // goes from 1 to 10, higher means more serious
+    private int patientAge;
 
-    // constructor
-    public Patient(int id, String name, int severity, int age) {
-        this.id = id;
-        this.name = name;
-        this.severity = severity;
-        this.age = age;
+    // this constructor takes all the info when creating a new patient
+    public Patient(int patientId, String patientName, int severityLevel, int patientAge) {
+        this.patientId = patientId;
+        this.patientName = patientName;
+        this.severityLevel = severityLevel;
+        this.patientAge = patientAge;
     }
 
-    // getters
+    // I need these getters so other classes can read the patient info
     public int getId() {
-        return id;
+        return patientId;
     }
 
     public String getName() {
-        return name;
+        return patientName;
     }
 
     public int getSeverity() {
-        return severity;
+        return severityLevel;
     }
 
     public int getAge() {
-        return age;
+        return patientAge;
     }
 
-    // setters
-    public void setId(int id) {
-        this.id = id;
+    // setters in case I need to update something later
+    public void setId(int newId) {
+        this.patientId = newId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String newName) {
+        this.patientName = newName;
     }
 
-    public void setSeverity(int severity) {
-        this.severity = severity;
+    public void setSeverity(int newSeverity) {
+        this.severityLevel = newSeverity;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setAge(int newAge) {
+        this.patientAge = newAge;
     }
 
+    // this helps me see the patient info when debugging
     @Override
     public String toString() {
-        return "Patient [ID=" + id + ", Name=" + name +
-                ", Severity=" + severity + ", Age=" + age + "]";
+        String result = "Patient [ID=" + patientId + ", Name=" + patientName +
+                ", Severity=" + severityLevel + ", Age=" + patientAge + "]";
+        return result;
     }
 }

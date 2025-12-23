@@ -1,66 +1,107 @@
-// LIFO Stack implementation
+// Stack implementation for discharge records
+// Last In First Out - like browser history or undo button
 public class DischargeStack {
     
-    private DischargeNode top;
-    private int count;
+    // points to the most recent discharge (top of the stack)
+    private DischargeNode topOfStack;
+    // keeps track of how many records are in the stack
+    private int recordCount;
     
+    // start with empty stack
     public DischargeStack() {
-        this.top = null;
-        this.count = 0;
+        this.topOfStack = null;
+        this.recordCount = 0;
     }
     
-    // push: add to the top
-    public void push(DischargeRecord rec) {
-        DischargeNode node = new DischargeNode(rec);
+    // push a new record onto the top of the stack
+    // this is O(1) because I just update the top pointer
+    public void push(DischargeRecord newRecord) {
+        // wrap the record in a node
+        DischargeNode freshNode = new DischargeNode(newRecord);
         
-        if (top == null) {
-            top = node;
+        boolean stackIsEmpty = (topOfStack == null);
+        
+        if (stackIsEmpty) {
+            // if stack was empty, this becomes the top
+            topOfStack = freshNode;
         } else {
-            node.setNext(top); // new node points to old top
-            top = node;        // update top
+            // new node points to old top, then becomes the new top
+            freshNode.setNext(topOfStack);
+            topOfStack = freshNode;
         }
-        count++;
+        
+        // one more record in the stack
+        recordCount = recordCount + 1;
     }
     
-    // pop: remove from top
+    // removes and returns the top record
+    // this is O(1), just moving the top pointer down
     public DischargeRecord pop() {
-        if (top == null) return null;
+        boolean stackIsEmpty = (topOfStack == null);
         
-        DischargeRecord temp = top.getData();
-        top = top.getNext(); // move top down
-        count--;
+        if (stackIsEmpty) {
+            return null;
+        }
         
-        return temp;
+        // grab the data from top node
+        DischargeRecord removedRecord = topOfStack.getData();
+        
+        // move top pointer to the node below
+        topOfStack = topOfStack.getNext();
+        
+        // one less record now
+        recordCount = recordCount - 1;
+        
+        return removedRecord;
     }
     
-    // peek: see top element
+    // look at top record without removing it
+    // useful when I just want to check the latest discharge
     public DischargeRecord peek() {
-        if (top == null) return null;
-        return top.getData();
+        boolean stackIsEmpty = (topOfStack == null);
+        
+        if (stackIsEmpty) {
+            return null;
+        }
+        
+        return topOfStack.getData();
     }
     
+    // prints all records from top to bottom
     public void printStack() {
-        if (top == null) {
+        boolean stackIsEmpty = (topOfStack == null);
+        
+        if (stackIsEmpty) {
             System.out.println("Stack is empty");
             return;
         }
         
-        // Header with fixed column widths
+        // table header
         System.out.printf("%-12s %-18s%n", "Patient ID", "Time");
         System.out.printf("%-12s %-18s%n", "----------", "----------------");
         
-        DischargeNode temp = top;
-        while (temp != null) {
-            System.out.printf("%-12d %-18d%n", temp.getData().getPatID(), temp.getData().getTime());
-            temp = temp.getNext();
+        // walk through stack from top to bottom
+        DischargeNode printNode = topOfStack;
+        
+        while (printNode != null) {
+            DischargeRecord currentRecord = printNode.getData();
+            
+            System.out.printf("%-12d %-18d%n", 
+                currentRecord.getPatID(), 
+                currentRecord.getTime());
+            
+            printNode = printNode.getNext();
         }
     }
     
+    // returns how many records are stored
     public int getSize() {
-        return count;
+        return recordCount;
     }
     
+    // checks if stack has anything
     public boolean isEmpty() {
-        return top == null;
+        boolean checkEmpty = (topOfStack == null);
+        return checkEmpty;
     }
 }

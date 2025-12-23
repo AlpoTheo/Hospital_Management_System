@@ -1,33 +1,41 @@
-// Request object that holds patient ID and priority status
+// This class represents a treatment request in the queue
+// I store which patient wants treatment and if its an emergency or not
 public class TreatmentRequest {
 
-    private int patientId;
-    private boolean isPriority;
+    private int requestPatientId;
+    private boolean emergencyFlag;
 
-    public TreatmentRequest(int patientId) {
-        this.patientId = patientId;
-        this.isPriority = false;
+    // simple constructor when its not an emergency
+    public TreatmentRequest(int requestPatientId) {
+        this.requestPatientId = requestPatientId;
+        this.emergencyFlag = false;  // default is not emergency
     }
 
-    public TreatmentRequest(int patientId, boolean isPriority) {
-        this.patientId = patientId;
-        this.isPriority = isPriority;
+    // this constructor lets me specify if its emergency
+    public TreatmentRequest(int requestPatientId, boolean emergencyFlag) {
+        this.requestPatientId = requestPatientId;
+        this.emergencyFlag = emergencyFlag;
     }
 
+    // I need this to know which patient the request belongs to
     public int getPatientId() {
-        return patientId;
+        return requestPatientId;
     }
 
+    // checking if this is an emergency case
     public boolean isPriority() {
-        return isPriority;
+        return emergencyFlag;
     }
 
-    public void setPriority(boolean priority) {
-        isPriority = priority;
+    // in case I need to change the priority later
+    public void setPriority(boolean newPriority) {
+        emergencyFlag = newPriority;
     }
 
+    // for printing and debugging purposes
     @Override
     public String toString() {
-        return "Request [Patient=" + patientId + ", Priority=" + isPriority + "]";
+        String output = "Request [Patient=" + requestPatientId + ", Priority=" + emergencyFlag + "]";
+        return output;
     }
 }

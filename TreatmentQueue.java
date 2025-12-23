@@ -1,91 +1,134 @@
-// Queue for treatment requests (FIFO)
+// FIFO Queue implementation for treatment requests
+// First person in line gets treated first, makes sense for a hospital
 public class TreatmentQueue {
     
-    private TreatmentNode front;
-    private TreatmentNode rear;
-    private int size;
+    // points to the first person waiting (front of the line)
+    private TreatmentNode frontOfLine;
+    // points to the last person who joined (back of the line)
+    private TreatmentNode backOfLine;
+    // how many requests are waiting
+    private int requestCount;
     
+    // start with empty queue
     public TreatmentQueue() {
-        this.front = null;
-        this.rear = null;
-        this.size = 0;
+        this.frontOfLine = null;
+        this.backOfLine = null;
+        this.requestCount = 0;
     }
     
-    // Add to rear
-    public void enqueue(TreatmentRequest request) {
-        TreatmentNode newNode = new TreatmentNode(request);
+    // adds a new request to the back of the queue
+    // this is O(1) because I keep track of the back
+    public void enqueue(TreatmentRequest newRequest) {
+        // wrap the request in a node
+        TreatmentNode freshNode = new TreatmentNode(newRequest);
         
-        if (isEmpty()) {
-            front = newNode;
-            rear = newNode;
+        boolean queueIsEmpty = (frontOfLine == null);
+        
+        if (queueIsEmpty) {
+            // if queue was empty, this node is both front and back
+            frontOfLine = freshNode;
+            backOfLine = freshNode;
         } else {
-            rear.setNext(newNode);
-            rear = newNode;
+            // add to the back and update backOfLine pointer
+            backOfLine.setNext(freshNode);
+            backOfLine = freshNode;
         }
-        size++;
+        
+        // increase the counter
+        requestCount = requestCount + 1;
     }
     
-    // Remove from front
+    // removes and returns the request at the front
+    // this is O(1) because I just move the front pointer
     public TreatmentRequest dequeue() {
-        if (isEmpty()) {
+        boolean queueIsEmpty = (frontOfLine == null);
+        
+        if (queueIsEmpty) {
             return null;
         }
         
-        TreatmentRequest request = front.getRequest();
-        front = front.getNext();
+        // grab the request from the front node
+        TreatmentRequest removedRequest = frontOfLine.getRequest();
         
-        // If queue becomes empty, rear must also be null
-        if (front == null) {
-            rear = null;
+        // move front pointer to the next person in line
+        frontOfLine = frontOfLine.getNext();
+        
+        // if the queue is now empty, back should also be null
+        boolean nowEmpty = (frontOfLine == null);
+        if (nowEmpty) {
+            backOfLine = null;
         }
         
-        size--;
-        return request;
+        // decrease counter
+        requestCount = requestCount - 1;
+        
+        return removedRequest;
     }
     
+    // returns how many requests are waiting
     public int size() {
-        return size;
+        return requestCount;
     }
     
-    // Print queue from front to rear
+    // prints everyone in the queue from front to back
     public void printQueue() {
-        if (isEmpty()) {
+        boolean queueIsEmpty = (frontOfLine == null);
+        
+        if (queueIsEmpty) {
             System.out.println("Queue is empty.");
             return;
         }
         
-        TreatmentNode current = front;
-        int count = 1;
+        // start at front and walk through
+        TreatmentNode printNode = frontOfLine;
+        int positionNumber = 1;
         
-        // Header with fixed widths
+        // header for the table
         System.out.printf("%-5s %-12s %-10s%n", "Pos", "Patient ID", "Priority");
         System.out.printf("%-5s %-12s %-10s%n", "---", "----------", "--------");
         
-        while (current != null) {
-            TreatmentRequest req = current.getRequest();
-            String priorityStr = req.isPriority() ? "YES" : "No";
+        while (printNode != null) {
+            TreatmentRequest currentRequest = printNode.getRequest();
             
-            System.out.printf("%-5d %-12d %-10s%n", count, req.getPatientId(), priorityStr);
+            // show YES or No for priority
+            String priorityText;
+            if (currentRequest.isPriority()) {
+                priorityText = "YES";
+            } else {
+                priorityText = "No";
+            }
             
-            current = current.getNext();
-            count++;
+            System.out.printf("%-5d %-12d %-10s%n", 
+                positionNumber, 
+                currentRequest.getPatientId(), 
+                priorityText);
+            
+            printNode = printNode.getNext();
+            positionNumber = positionNumber + 1;
         }
-        System.out.println("Total Requests: " + size);
+        
+        System.out.println("Total Requests: " + requestCount);
     }
     
+    // quick check if queue has anyone
     public boolean isEmpty() {
-        return front == null;
+        boolean checkEmpty = (frontOfLine == null);
+        return checkEmpty;
     }
     
-    // Return front request without removing
+    // lets me see whos at front without removing them
     public TreatmentRequest peek() {
-        if (isEmpty()) {
+        boolean queueIsEmpty = (frontOfLine == null);
+        
+        if (queueIsEmpty) {
             return null;
         }
-        return front.getRequest();
+        
+        return frontOfLine.getRequest();
     }
     
+    // in case I need direct access to the front node
     public TreatmentNode getFront() {
-        return front;
+        return frontOfLine;
     }
 }

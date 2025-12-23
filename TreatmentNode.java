@@ -1,27 +1,35 @@
-// Node for treatment queue
+// Node class specifically for the treatment queue
+// It wraps a TreatmentRequest and has a link to the next node
 public class TreatmentNode {
 
-    private TreatmentRequest request;
-    private TreatmentNode next;
+    // the treatment request stored in this node
+    private TreatmentRequest storedRequest;
+    // pointer to whatever node comes after this one
+    private TreatmentNode linkToNextNode;
 
-    public TreatmentNode(TreatmentRequest request) {
-        this.request = request;
-        this.next = null;
+    // constructor - I give it a request and it starts with no next node
+    public TreatmentNode(TreatmentRequest storedRequest) {
+        this.storedRequest = storedRequest;
+        this.linkToNextNode = null;
     }
 
+    // getter for the request data
     public TreatmentRequest getRequest() {
-        return request;
+        return storedRequest;
     }
 
+    // I call this when traversing the queue
     public TreatmentNode getNext() {
-        return next;
+        return linkToNextNode;
     }
 
-    public void setRequest(TreatmentRequest request) {
-        this.request = request;
+    // setter for request in case I need to update it
+    public void setRequest(TreatmentRequest newRequest) {
+        this.storedRequest = newRequest;
     }
 
-    public void setNext(TreatmentNode next) {
-        this.next = next;
+    // this connects this node to the next one in line
+    public void setNext(TreatmentNode nextNodeReference) {
+        this.linkToNextNode = nextNodeReference;
     }
 }
